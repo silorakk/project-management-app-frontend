@@ -18,6 +18,6 @@ export class LoginComponent {
 
   login(userForm: UserForm) {
     this.#authService.login(userForm.email, userForm.password);
-    this.#toastService.showToast('Sucessfully logged in', 'Welcome back!');
+    // this.#toastService.showToast('Sucessfully logged in', 'Welcome back!');
   }
 }

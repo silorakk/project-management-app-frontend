@@ -11,18 +11,11 @@ import { RegisterComponent } from './register/register.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ToastComponent } from './shared/components/toast/toast.component';
 import { AuthInterceptor } from './auth-interceptor';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CreateProjectModalComponent } from './shared/components/create-project-modal/create-project-modal.component';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    RouterModule.forRoot(routes),
-    UserFormComponent,
-    ReactiveFormsModule,
-    HttpClientModule,
-    ToastComponent,
-  ],
   providers: [
     AuthService,
     {
@@ -32,5 +25,16 @@ import { AuthInterceptor } from './auth-interceptor';
     },
   ],
   bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    RouterModule.forRoot(routes),
+    UserFormComponent,
+    ReactiveFormsModule,
+    HttpClientModule,
+    ToastComponent,
+    CreateProjectModalComponent,
+    NgbModule,
+  ],
 })
 export class AppModule {}
