@@ -1,6 +1,19 @@
 
 <!-- Nav bar -->
-<h1 class="flex justify-center font-bold my-10 text-3xl">Project Management App</h1>
+<div class="flex justify-between items-center px-12">
+  <span></span>
+  <h1 class="flex justify-center font-bold my-4 text-3xl">Project Management App</h1>
+  <div>
+  @if (isLoggedIn()) {
+    <button (click)="logout()"  type="button" class="rounded h-8 w-auto bg-indigo-500 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Logout</button>
+  }
+</div>
+
+</div>
+
 <main>
   <router-outlet></router-outlet>
 </main>
+
+
+<app-toast></app-toast>

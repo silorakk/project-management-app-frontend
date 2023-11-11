@@ -10,3 +10,12 @@ export interface User {
 export interface RegisterResponse {
   user: User;
 }
+
+export interface LoginResponse {
+  access_token: string;
+}
+
+export interface Project {
+  id: number;
+  name: string;
+}

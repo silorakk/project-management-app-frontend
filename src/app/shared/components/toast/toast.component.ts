@@ -11,9 +11,6 @@ import { Toast, ToastService } from 'src/app/services/toast.service';
   styleUrl: './toast.component.css',
 })
 export class ToastComponent {
-  @Input({ required: true }) title = '';
-  @Input() description: string | null = null;
-
   toasts$: Observable<Toast[]>;
 
   constructor(private _toastService: ToastService) {
