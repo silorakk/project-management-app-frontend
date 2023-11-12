@@ -1,0 +1,151 @@
+
+<p>Project name: {{ (project$ | async)?.project?.name }}</p>
+
+<div class="bg-gray-400">
+    <div class="inline-grid grid-cols-4">
+        <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60">
+            <h2>Backlog</h2>  
+        </div>
+        <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60">
+            Todo
+        </div>
+        <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60">
+            Doing
+        </div>
+        <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60">
+            Done
+        </div>
+        <!-- Backlog items -->
+        <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
+            <!-- Tasks -->
+            @if (tasks$ | async | filterTasksByStatus: backlogStatus; as tasks) {
+                @for (task of tasks; track task.id) {
+                    <div class="border rounded p-3 bg-gray-200">
+                        {{ task.name }}
+                    </div> 
+                }
+            }
+          
+          
+           <!-- Add task -->
+           @if (!isAddBacklogExpanded()) {
+           <button (click)="isAddBacklogExpanded.set(true)" class="flex items-center hover:bg-gray-200 py-2 rounded">
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+            <span>Add a card</span>
+           </button>
+        } @else {
+            <div class="flex flex-col gap-4 border rounded p-3 bg-gray-200">
+                <textarea [(ngModel)]="backlogInput" contenteditable type="text" class="block h-full w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm focus:outline-none focus:ring-0  placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Enter task.."></textarea>
+                <div class="flex items-center gap-2">
+                    <button (click)="addTask(backlogInput, backlogStatus)" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add card</button>
+                    <button (click)="isAddBacklogExpanded.set(false)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      </button>
+                </div>
+
+            </div>
+        }
+
+          
+        </div>
+        <!-- Todo items -->
+        <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
+            <!-- Tasks -->
+            @if (tasks$ | async | filterTasksByStatus: todoStatus; as tasks) {
+                @for (task of tasks; track task.id) {
+                    <div class="border rounded p-3 bg-gray-200">
+                        {{ task.name }}
+                    </div> 
+                }
+            }
+        @if (!isAddTodoExpanded()) {
+            <button (click)="isAddTodoExpanded.set(true)" class="flex items-center hover:bg-gray-200 py-2 rounded">
+                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                   <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                 </svg>
+             <span>Add a card</span>
+            </button>
+         } @else {
+             <div class="flex flex-col gap-4 border rounded p-3 bg-gray-200">
+                 <textarea [(ngModel)]="todoInput" contenteditable type="text" class="block h-full w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm focus:outline-none focus:ring-0  placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Enter task.."></textarea>
+                 <div class="flex items-center gap-2">
+                     <button (click)="addTask(todoInput, todoStatus)" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add card</button>
+                     <button (click)="isAddTodoExpanded.set(false)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                       </svg>
+                       </button>
+                 </div>
+ 
+             </div>
+         }
+         </div>
+         <!-- Doing items -->
+         <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
+            <!-- Tasks -->
+            @if (tasks$ | async | filterTasksByStatus: doingStatus; as tasks) {
+                @for (task of tasks; track task.id) {
+                    <div class="border rounded p-3 bg-gray-200">
+                        {{ task.name }}
+                    </div> 
+                }
+            }
+        @if (!isAddDoingExpanded()) {
+            <button (click)="isAddDoingExpanded.set(true)" class="flex items-center hover:bg-gray-200 py-2 rounded">
+                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                   <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                 </svg>
+             <span>Add a card</span>
+            </button>
+         } @else {
+             <div class="flex flex-col gap-4 border rounded p-3 bg-gray-200">
+                 <textarea [(ngModel)]="doingInput" contenteditable type="text" class="block h-full w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm focus:outline-none focus:ring-0  placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Enter task.."></textarea>
+                 <div class="flex items-center gap-2">
+                     <button (click)="addTask(doingInput, doingStatus)" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add card</button>
+                     <button (click)="isAddDoingExpanded.set(false)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                       </svg>
+                       </button>
+                 </div>
+ 
+             </div>
+         }
+         </div>
+
+         <!-- Done items -->
+         <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
+            <!-- Tasks -->
+            @if (tasks$ | async | filterTasksByStatus: doneStatus; as tasks) {
+                @for (task of tasks; track task.id) {
+                    <div class="border rounded p-3 bg-gray-200">
+                        {{ task.name }}
+                    </div> 
+                }
+            }
+        @if (!isAddDoneExpanded()) {
+            <button (click)="isAddDoneExpanded.set(true)" class="flex items-center hover:bg-gray-200 py-2 rounded">
+                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                   <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                 </svg>
+             <span>Add a card</span>
+            </button>
+         } @else {
+             <div class="flex flex-col gap-4 border rounded p-3 bg-gray-200">
+                 <textarea [(ngModel)]="doneInput" contenteditable type="text" class="block h-full w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm focus:outline-none focus:ring-0  placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="Enter task.."></textarea>
+                 <div class="flex items-center gap-2">
+                     <button (click)="addTask(doneInput, doneStatus)" type="button" class="rounded bg-indigo-600 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add card</button>
+                     <button (click)="isAddDoingExpanded.set(false)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                       </svg>
+                       </button>
+                 </div>
+ 
+             </div>
+         }
+         </div>
+       
+    </div>
+    
+</div>

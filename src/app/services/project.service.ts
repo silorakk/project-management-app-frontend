@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BASE_URL } from './auth.service';
-import { Project } from './types';
+import { Project, Task } from './types';
 import { BehaviorSubject, Subject, switchMap, tap } from 'rxjs';
 
 @Injectable({
@@ -20,5 +20,17 @@ export class ProjectService {
 
   getUserProjects() {
     return this.#http.get<{ projects: Project[] }>(BASE_URL + '/projects');
+  }
+
+  getProject(projectId: string) {
+    return this.#http.get<{ project: Project }>(
+      BASE_URL + '/projects/' + projectId
+    );
+  }
+
+  getAllProjectTasks(projectId: string) {
+    return this.#http.get<{ tasks: Task[] }>(
+      BASE_URL + '/projects/' + projectId + '/tasks'
+    );
   }
 }
