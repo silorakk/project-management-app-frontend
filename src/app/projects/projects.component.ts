@@ -14,6 +14,15 @@ import { Project, Task, TaskStatus } from '../services/types';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterTasksByStatusPipe } from '../filter-tasks-by-status.pipe';
 import { TaskService } from '../services/task.service';
+import {
+  CdkDropListGroup,
+  CdkDropList,
+  CdkDrag,
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
+
 import { ToastService } from '../services/toast.service';
 
 @Component({
@@ -26,6 +35,9 @@ import { ToastService } from '../services/toast.service';
     ReactiveFormsModule,
     FormsModule,
     FilterTasksByStatusPipe,
+    CdkDropListGroup,
+    CdkDropList,
+    CdkDrag,
   ],
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
@@ -125,6 +137,23 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     if (status === TaskStatus.DONE) {
       this.isAddDoneExpanded.set(false);
       this.doneInput = '';
+    }
+  }
+
+  drop(event: CdkDragDrop<Task[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     }
   }
 }

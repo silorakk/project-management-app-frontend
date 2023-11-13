@@ -10,7 +10,7 @@
 </div>
 
 <div class="bg-gray-400">
-    <div class="inline-grid grid-cols-4">
+    <div class="inline-grid grid-cols-4" cdkDropListGroup>
         <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60">
             <h2>Backlog</h2>  
         </div>
@@ -24,15 +24,14 @@
             Done
         </div>
         <!-- Backlog items -->
-        <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
+        @if (tasks$ | async | filterTasksByStatus: backlogStatus; as tasks) {
+        <div id="backlogList" #backlogList="cdkDropList" [cdkDropListConnectedTo]="['todoList', 'doingList', 'doneList']" class="flex flex-col gap-4" cdkDropList [cdkDropListData]="tasks" (cdkDropListDropped)="drop($event)" class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
             <!-- Tasks -->
-            @if (tasks$ | async | filterTasksByStatus: backlogStatus; as tasks) {
                 @for (task of tasks; track task.id) {
-                    <div class="border rounded p-3 bg-gray-200">
+                    <div cdkDrag class="border rounded p-3 bg-gray-200 break-words">
                         {{ task.name }}
                     </div> 
                 }
-            }
           
           
            <!-- Add task -->
@@ -56,19 +55,19 @@
 
             </div>
         }
-
-          
+      
         </div>
+        }
+
         <!-- Todo items -->
-        <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
+        @if (tasks$ | async | filterTasksByStatus: todoStatus; as tasks) {
+        <div id="todoList" #todoList="cdkDropList" [cdkDropListConnectedTo]="['backlogList', 'doingList', 'doneList']" class="flex flex-col gap-4" cdkDropList [cdkDropListData]="tasks" (cdkDropListDropped)="drop($event)" class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
             <!-- Tasks -->
-            @if (tasks$ | async | filterTasksByStatus: todoStatus; as tasks) {
                 @for (task of tasks; track task.id) {
-                    <div class="border rounded p-3 bg-gray-200">
+                    <div cdkDrag class="border rounded p-3 bg-gray-200 break-words">
                         {{ task.name }}
                     </div> 
                 }
-            }
         @if (!isAddTodoExpanded()) {
             <button (click)="isAddTodoExpanded.set(true)" class="flex items-center hover:bg-gray-200 py-2 rounded">
                  <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -90,16 +89,16 @@
              </div>
          }
          </div>
+        }
          <!-- Doing items -->
-         <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
+         @if (tasks$ | async | filterTasksByStatus: doingStatus; as tasks) {
+         <div id="doingList" #doingList="cdkDropList" [cdkDropListConnectedTo]="['todoList', 'backlogList', 'doneList']" class="flex flex-col gap-4" cdkDropList [cdkDropListData]="tasks" (cdkDropListDropped)="drop($event)" class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
             <!-- Tasks -->
-            @if (tasks$ | async | filterTasksByStatus: doingStatus; as tasks) {
                 @for (task of tasks; track task.id) {
-                    <div class="border rounded p-3 bg-gray-200">
+                    <div cdkDrag class="border rounded p-3 bg-gray-200 break-words">
                         {{ task.name }}
                     </div> 
                 }
-            }
         @if (!isAddDoingExpanded()) {
             <button (click)="isAddDoingExpanded.set(true)" class="flex items-center hover:bg-gray-200 py-2 rounded">
                  <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -121,17 +120,16 @@
              </div>
          }
          </div>
-
+        }
          <!-- Done items -->
-         <div class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
+         @if (tasks$ | async | filterTasksByStatus: doneStatus; as tasks) {
+         <div id="doneList"  doneList="cdkDropList" [cdkDropListConnectedTo]="['todoList', 'doingList', 'backlogList']" class="flex flex-col gap-4" cdkDropList [cdkDropListData]="tasks" (cdkDropListDropped)="drop($event)" class="border p-4 m-4 bg-neutral-100 rounded shadow w-60 flex flex-col gap-4">
             <!-- Tasks -->
-            @if (tasks$ | async | filterTasksByStatus: doneStatus; as tasks) {
                 @for (task of tasks; track task.id) {
-                    <div class="border rounded p-3 bg-gray-200">
+                    <div cdkDrag class="border rounded p-3 bg-gray-200 break-words">
                         {{ task.name }}
                     </div> 
                 }
-            }
         @if (!isAddDoneExpanded()) {
             <button (click)="isAddDoneExpanded.set(true)" class="flex items-center hover:bg-gray-200 py-2 rounded">
                  <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -153,7 +151,7 @@
              </div>
          }
          </div>
-       
+        }
     </div>
     
 </div>
