@@ -6,7 +6,7 @@ import { Observable, of } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { ToastService } from './toast.service';
 
-export const BASE_URL = 'http://192.168.1.227:8000';
+export const BASE_URL = 'http://localhost:8000';
 export const TOKEN_NAME = 'access_token';
 
 @Injectable({

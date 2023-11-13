@@ -148,12 +148,37 @@ export class ProjectsComponent implements OnInit, OnDestroy {
         event.currentIndex
       );
     } else {
+      console.log(event);
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
+      const newContainerId = event.container.id;
+      let newStatus: TaskStatus | null = null;
+      if (newContainerId === 'todoList') {
+        newStatus = TaskStatus.TODO;
+      }
+      if (newContainerId === 'backlogList') {
+        newStatus = TaskStatus.BACKLOG;
+      }
+      if (newContainerId === 'doingList') {
+        newStatus = TaskStatus.DOING;
+      }
+      if (newContainerId === 'doneList') {
+        newStatus = TaskStatus.DONE;
+      }
+
+      const item = event.container.data[event.currentIndex];
+
+      if (newStatus !== null) {
+        this.#taskService
+          .updateTaskStatus(String(item.id), newStatus)
+          .subscribe((data) => {
+            this.#taskService.notifyTaskUpdated();
+          });
+      }
     }
   }
 }

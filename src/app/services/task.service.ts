@@ -15,4 +15,20 @@ export class TaskService {
   createTask(projectId: string, name: string, status: TaskStatus) {
     this.#socket.emit('createTask', { projectId, name, status });
   }
+
+  notifyTaskUpdated() {
+    this.#socket.emit('message', 'task updated');
+  }
+
+  updateTaskStatus(taskId: string, newStatus: TaskStatus) {
+    return this.#http.put<{ task: Task }>(
+      BASE_URL + '/tasks/' + taskId + '/status',
+      {
+        status: newStatus,
+      },
+      {
+        observe: 'response',
+      }
+    );
+  }
 }
